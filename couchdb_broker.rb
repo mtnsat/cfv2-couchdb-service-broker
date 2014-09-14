@@ -12,7 +12,7 @@ class CouchDBBroker < Sinatra::Base
     user == creds.fetch('user') and pass == creds.fetch('pass')
   end
 
-  get '/catalog' do
+  get '/v2/catalog' do
     content_type :json
 
     self.class.settings.fetch('catalog').to_json
