@@ -6,6 +6,12 @@ require 'yaml'
 # SETTINGS_FILENAME = 'config/foo.yml'
 
 class CouchDBBroker < Sinatra::Base
+  # HTTP Auth required for CFv2
+  use Rack::Auth::Basic do |user, pass|
+    creds = self.settings.fetch('basic_auth')
+    user == creds.fetch('user') and pass == creds.fetch('pass')
+  end
+
   get '/catalog' do
     content_type :json
 
