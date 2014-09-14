@@ -6,22 +6,22 @@ require 'yaml'
 # SETTINGS_FILENAME = 'config/foo.yml'
 
 class CouchDBBroker < Sinatra::Base
+  def initialize
+    super
+
+    settings_file = defined?(SETTINGS_FILENAME) ? SETTINGS_FILENAME : 'config/settings.yml'
+    @@settings = YAML.load_file(settings_file)
+  end
+
   # HTTP Auth required for CFv2
   use Rack::Auth::Basic do |user, pass|
-    creds = self.settings.fetch('basic_auth')
+    creds = @@settings.fetch('basic_auth')
     user == creds.fetch('user') and pass == creds.fetch('pass')
   end
 
   get '/v2/catalog' do
     content_type :json
 
-    self.class.settings.fetch('catalog').to_json
-  end
-
-  private
-
-  def self.settings
-    file = defined?(SETTINGS_FILENAME) ? SETTINGS_FILENAME : 'config/settings.yml'
-    @settings ||= YAML.load_file(file)
+    @@settings.fetch('catalog').to_json
   end
 end

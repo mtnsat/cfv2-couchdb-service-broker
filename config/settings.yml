@@ -14,6 +14,6 @@ catalog:
           name: public
           description: All databases are public
 
-  basic_auth:
-    user: mtn
-    pass: idontknow
+basic_auth:
+  user: mtn
+  pass: idontknow
