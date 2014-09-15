@@ -17,3 +17,7 @@ catalog:
 basic_auth:
   user: mtn
   pass: idontknow
+
+couchdb:
+  user: mtn
+  pass: idontknow
