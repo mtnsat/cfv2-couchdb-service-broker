@@ -41,6 +41,17 @@ class CouchDBBroker < Sinatra::Base
     {'dashboard_url' => "http://#{SERVER}:#{PORT}/#{id}"}.to_json
   end
 
+  # Deprovision (Delete database)
+  delete '/v2/service_instances/:id' do |id|
+    content_type :json
+
+    # deprovision! returns nil (false) when db does not exist
+    code = couchdb_service.deprovision!(id) ? 200 : 410
+
+    status code
+    {}.to_json
+  end
+
   private
 
   def couchdb_service

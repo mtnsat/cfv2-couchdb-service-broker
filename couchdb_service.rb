@@ -9,6 +9,10 @@ class CouchDBService
     database(name).create_if_missing!
   end
 
+  def deprovision!(name)
+    database(name).delete_if_missing!
+  end
+
   private
 
   def database(name)
