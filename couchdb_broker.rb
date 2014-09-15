@@ -30,23 +30,23 @@ class CouchDBBroker < Sinatra::Base
     @@settings.fetch('catalog').to_json
   end
 
-  # Provision (Create database)
+  # Provision
   put '/v2/service_instances/:id' do |id|
     content_type :json
 
-    # provision! returns nil (false) when db already exists
-    code = couchdb_service.provision!(id) ? 201 : 200
+    # returns nil (false) when db already exists
+    code = couchdb_service.create_db!(id) ? 201 : 200
 
     status code
     {'dashboard_url' => "http://#{SERVER}:#{PORT}/#{id}"}.to_json
   end
 
-  # Deprovision (Delete database)
+  # Deprovision
   delete '/v2/service_instances/:id' do |id|
     content_type :json
 
-    # deprovision! returns nil (false) when db does not exist
-    code = couchdb_service.deprovision!(id) ? 200 : 410
+    # returns nil (false) when db does not exist
+    code = couchdb_service.delete_db!(id) ? 200 : 410
 
     status code
     {}.to_json

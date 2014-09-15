@@ -5,11 +5,11 @@ class CouchDBService
     @server = CouchDB::Server.new(server, port, user, pass)
   end
 
-  def provision!(name)
+  def create_db!(name)
     database(name).create_if_missing!
   end
 
-  def deprovision!(name)
+  def delete_db!(name)
     database(name).delete_if_missing!
   end
 
