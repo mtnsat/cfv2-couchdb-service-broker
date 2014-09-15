@@ -3,7 +3,7 @@ catalog:
     - id: ec7ba42d-136a-4801-a80e-d59e849c3379
       name: couchdb
       description: Provides read and write access to a CouchDB instance.
-      bindable: true
+      bindable: false
       tags:
         - couch
         - database
