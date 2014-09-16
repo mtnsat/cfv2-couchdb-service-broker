@@ -36,7 +36,7 @@ class CouchDBBroker < Sinatra::Base
     code = couchdb_service.create_db!(db_name(id)) ? 201 : 200
 
     status code
-    {'dashboard_url' => "http://#{@@couch_settings.fetch('ip')}:#{@@couch_settings.fetch('port')}/#{id}"}.to_json
+    {'dashboard_url' => "http://#{@@couch_settings.fetch('ip')}:#{@@couch_settings.fetch('port')}/#{db_name(id)}"}.to_json
   end
 
   # Bind
