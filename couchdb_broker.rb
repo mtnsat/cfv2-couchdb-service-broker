@@ -39,6 +39,40 @@ class CouchDBBroker < Sinatra::Base
     {'dashboard_url' => "http://#{@@couch_settings.fetch('ip')}:#{@@couch_settings.fetch('port')}/#{id}"}.to_json
   end
 
+  # Bind
+  put '/v2/service_instances/:instance_id/service_bindings/:id' do |instance_id, binding_id|
+    content_type :json
+
+    begin
+      credentials = couchdb_service.create_user_for_db(instance_id, binding_id)
+      status 201
+      {"credentials" => credentials}.to_json
+    rescue CouchDB::UnauthorizedError
+      status 401
+      {"description" => "Unauthorized"}.to_json
+    rescue CouchDB::NotFoundError
+      status 404
+      {"description" => "Not found"}.to_json
+    end
+  end
+
+  # Unbind
+  delete '/v2/service_instances/:instance_id/service_bindings/:id' do |instance_id, binding_id|
+    content_type :json
+
+    begin
+      credentials = couchdb_service.remove_user_for_db(instance_id, binding_id)
+      status 200
+      {}.to_json
+    rescue CouchDB::UnauthorizedError
+      status 401
+      {"description" => "Unauthorized"}.to_json
+    rescue CouchDB::NotFoundError
+      status 404
+      {"description" => "Not found"}.to_json
+    end    
+  end
+
   # Deprovision
   delete '/v2/service_instances/:id' do |id|
     content_type :json
