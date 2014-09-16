@@ -11,7 +11,7 @@ class CouchDBService
   end
 
   def delete_db!(name)
-    database(name).delete_if_missing!
+    database(name).delete_if_exists!
   end
 
   def create_user_for_db!(database, name)
