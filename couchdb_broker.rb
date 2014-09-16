@@ -14,7 +14,6 @@ class CouchDBBroker < Sinatra::Base
 
     settings_file = defined?(SETTINGS_FILENAME) ? SETTINGS_FILENAME : 'config/settings.yml'
     @@settings = YAML.load_file(settings_file)
-    @@couchdb_service = CouchDBService.new(SERVER, PORT, @@settings.fetch('couchdb').fetch('user'), @@settings.fetch('couchdb').fetch('pass'))
   end
 
   # HTTP Auth required for CFv2
