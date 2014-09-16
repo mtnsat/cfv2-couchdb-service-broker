@@ -14,7 +14,6 @@ class CouchDBBroker < Sinatra::Base
 
     settings_file = defined?(SETTINGS_FILENAME) ? SETTINGS_FILENAME : 'config/settings.yml'
     @@settings = YAML.load_file(settings_file)
-    @@couchdb_service = CouchDBService.new
   end
 
   # HTTP Auth required for CFv2
@@ -39,6 +38,11 @@ class CouchDBBroker < Sinatra::Base
 
     status code
     {'dashboard_url' => "http://#{SERVER}:#{PORT}/#{id}"}.to_json
+  end
+
+  # Bind
+  put '/v2/service_instances/:instance_id/service_bindings/:id'
+    service_id
   end
 
   # Deprovision
