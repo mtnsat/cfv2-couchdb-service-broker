@@ -44,7 +44,7 @@ class CouchDBBroker < Sinatra::Base
     content_type :json
 
     begin
-      credentials = couchdb_service.create_user_for_db(instance_id, binding_id)
+      credentials = couchdb_service.create_user_for_db(db_name(instance_id), binding_id)
       status 201
       {"credentials" => credentials}.to_json
     rescue CouchDB::UnauthorizedError
@@ -61,7 +61,7 @@ class CouchDBBroker < Sinatra::Base
     content_type :json
 
     begin
-      credentials = couchdb_service.remove_user_for_db(instance_id, binding_id)
+      credentials = couchdb_service.remove_user_for_db(db_name(instance_id), binding_id)
       status 200
       {}.to_json
     rescue CouchDB::UnauthorizedError
@@ -70,7 +70,7 @@ class CouchDBBroker < Sinatra::Base
     rescue CouchDB::NotFoundError
       status 404
       {"description" => "Not found"}.to_json
-    end    
+    end
   end
 
   # Deprovision
