@@ -4,9 +4,7 @@ require 'yaml'
 require_relative 'couchdb_service'
 
 ## Set if you want to switch the settings config
-# SETTINGS_FILENAME = 'config/foo.yml'
-SERVER = 'localhost'
-PORT = 5985
+# SETTINGS_FILENAME = 'config/foo.yml
 
 class CouchDBBroker < Sinatra::Base
   def initialize
@@ -14,6 +12,7 @@ class CouchDBBroker < Sinatra::Base
 
     settings_file = defined?(SETTINGS_FILENAME) ? SETTINGS_FILENAME : 'config/settings.yml'
     @@settings = YAML.load_file(settings_file)
+    @@couch_settings = @@settings.fetch('couchdb')
   end
 
   # HTTP Auth required for CFv2
@@ -37,7 +36,7 @@ class CouchDBBroker < Sinatra::Base
     code = couchdb_service.create_db!(id) ? 201 : 200
 
     status code
-    {'dashboard_url' => "http://#{SERVER}:#{PORT}/#{id}"}.to_json
+    {'dashboard_url' => "http://#{@@couch_settings.fetch('ip')}:#{@@couch_settings.fetch('port')}/#{id}"}.to_json
   end
 
   # Deprovision
@@ -54,7 +53,9 @@ class CouchDBBroker < Sinatra::Base
   private
 
   def couchdb_service
-    creds = @@settings.fetch('couchdb')
-    CouchDBService.new(SERVER, PORT, creds.fetch('user'), creds.fetch('pass'))
+    CouchDBService.new(@@couch_settings.fetch('ip'),
+                       @@couch_settings.fetch('port'),
+                       @@couch_settings.fetch('admin'),
+                       @@couch_settings.fetch('pass'))
   end
 end
