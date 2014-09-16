@@ -33,7 +33,7 @@ class CouchDBBroker < Sinatra::Base
     content_type :json
 
     # returns nil (false) when db already exists
-    code = couchdb_service.create_db!(id) ? 201 : 200
+    code = couchdb_service.create_db!(db_name(id)) ? 201 : 200
 
     status code
     {'dashboard_url' => "http://#{@@couch_settings.fetch('ip')}:#{@@couch_settings.fetch('port')}/#{id}"}.to_json
@@ -44,7 +44,7 @@ class CouchDBBroker < Sinatra::Base
     content_type :json
 
     begin
-      credentials = couchdb_service.create_user_for_db(instance_id, binding_id)
+      credentials = couchdb_service.create_user_for_db(db_name(instance_id), binding_id)
       status 201
       {"credentials" => credentials}.to_json
     rescue CouchDB::UnauthorizedError
@@ -61,7 +61,7 @@ class CouchDBBroker < Sinatra::Base
     content_type :json
 
     begin
-      credentials = couchdb_service.remove_user_for_db(instance_id, binding_id)
+      credentials = couchdb_service.remove_user_for_db(db_name(instance_id), binding_id)
       status 200
       {}.to_json
     rescue CouchDB::UnauthorizedError
@@ -70,7 +70,7 @@ class CouchDBBroker < Sinatra::Base
     rescue CouchDB::NotFoundError
       status 404
       {"description" => "Not found"}.to_json
-    end    
+    end
   end
 
   # Deprovision
@@ -78,7 +78,7 @@ class CouchDBBroker < Sinatra::Base
     content_type :json
 
     # returns nil (false) when db does not exist
-    code = couchdb_service.delete_db!(id) ? 200 : 410
+    code = couchdb_service.delete_db!(db_name(id)) ? 200 : 410
 
     status code
     {}.to_json
@@ -91,5 +91,9 @@ class CouchDBBroker < Sinatra::Base
                        @@couch_settings.fetch('port'),
                        @@couch_settings.fetch('admin'),
                        @@couch_settings.fetch('pass'))
+  end
+
+  def db_name(id)
+    "db_#{id}"
   end
 end
