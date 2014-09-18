@@ -47,10 +47,10 @@ class CouchDBBroker < Sinatra::Base
       credentials = couchdb_service.create_user_for_db(db_name(instance_id), binding_id)
       status 201
       {"credentials" => credentials}.to_json
-    rescue CouchDB::UnauthorizedError
+    rescue CouchDB::Document::UnauthorizedError
       status 401
       {"description" => "Unauthorized"}.to_json
-    rescue CouchDB::NotFoundError
+    rescue CouchDB::Document::NotFoundError
       status 404
       {"description" => "Not found"}.to_json
     end
@@ -64,10 +64,10 @@ class CouchDBBroker < Sinatra::Base
       credentials = couchdb_service.remove_user_for_db(db_name(instance_id), binding_id)
       status 200
       {}.to_json
-    rescue CouchDB::UnauthorizedError
+    rescue CouchDB::Document::UnauthorizedError
       status 401
       {"description" => "Unauthorized"}.to_json
-    rescue CouchDB::NotFoundError
+    rescue CouchDB::Document::NotFoundError
       status 404
       {"description" => "Not found"}.to_json
     end
