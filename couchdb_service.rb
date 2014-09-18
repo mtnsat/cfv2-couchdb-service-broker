@@ -4,6 +4,7 @@ require 'faker'
 class CouchDBService
   def initialize(server, port, user, pass)
     @server = CouchDB::Server.new(server, port, user, pass)
+    @server.password_salt = Faker::Internet.password(7)
   end
 
   def create_db!(name)
@@ -21,7 +22,7 @@ class CouchDBService
     couch_user = CouchDB::User.new(user_database, name)
 
     # set password 
-    user_password = Faker::Internet.password(8)
+    user_password = Faker::Internet.password(11)
     couch_user.password = user_password
 
     # save
