@@ -44,7 +44,7 @@ class CouchDBBroker < Sinatra::Base
     content_type :json
 
     begin
-      credentials = couchdb_service.create_user_for_db(db_name(instance_id), binding_id)
+      credentials = couchdb_service.create_user_for_db!(db_name(instance_id), binding_id)
       status 201
       {"credentials" => credentials}.to_json
     rescue CouchDB::Document::UnauthorizedError
@@ -61,7 +61,7 @@ class CouchDBBroker < Sinatra::Base
     content_type :json
 
     begin
-      credentials = couchdb_service.remove_user_for_db(db_name(instance_id), binding_id)
+      credentials = couchdb_service.remove_user_for_db!(db_name(instance_id), binding_id)
       status 200
       {}.to_json
     rescue CouchDB::Document::UnauthorizedError
