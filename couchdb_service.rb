@@ -22,7 +22,7 @@ class CouchDBService
 
     # set password 
     user_password = Faker::Internet.password(8)
-    couch_user.password(user_password)
+    couch_user.password = user_password
 
     # save
     couch_user.save
