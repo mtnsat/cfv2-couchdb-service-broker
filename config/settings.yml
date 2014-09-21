@@ -2,26 +2,35 @@ catalog:
   services:
     - id: ec7ba42d-136a-4801-a80e-d59e849c3379
       name: couchdb
-      description: Provides read and write access to a CouchDB instance.
+      description: CouchDB database service
       bindable: true
       tags:
         - couch
         - database
         - nosql
         - key-value
+      metadata:
+        displayName: CouchDB Database
+        imageUrl: https://svn.apache.org/repos/asf/couchdb/supplement/logo/couchdb-icon-32px.png
+        longDescription: This service generates a database in the configured CouchDB instance. Binding an app generates a new user tied to that database.
+        providerDisplayName: CouchDB
+        documentationUrl: https://github.com/mtnsat/cfv2-couchdb-service-broker
+        supportUrl: https://github.com/mtnsat/cfv2-couchdb-service-broker
       plans:
         - id: aa3fc607-af81-4794-aef4-af272eef97ab
           name: public
           public: true
           free: true
-          description: All databases are public
+          description: All databases generated are public
+          metadata:
+            displayName: Public
 
 basic_auth:
-  user: mtn
-  pass: idontknow
+  user: admin
+  pass: password
 
 couchdb:
-  ip: 172.16.30.3
+  ip: 127.0.0.1
   port: 5984
-  admin: mtn
-  pass: idontknow
+  admin: admin
+  pass: password
