@@ -13,7 +13,7 @@ catalog:
         displayName: CouchDB Database
         imageUrl: https://svn.apache.org/repos/asf/couchdb/supplement/logo/couchdb-icon-32px.png
         longDescription: This service generates a database in the configured CouchDB instance. Binding an app generates a new user tied to that database.
-        providerDisplayName: CouchDB
+        providerDisplayName: MTN
         documentationUrl: https://github.com/mtnsat/cfv2-couchdb-service-broker
         supportUrl: https://github.com/mtnsat/cfv2-couchdb-service-broker
       plans:
